@@ -1,9 +1,10 @@
 package com.project.authentication.utils;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.apache.commons.codec.digest.DigestUtils;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -23,5 +24,11 @@ public class BasicAuthenticationUtil {
                 .setExpiration(Date.from(time.plus(2, ChronoUnit.MINUTES)))
                 .signWith(Keys.hmacShaKeyFor(secret))
                 .compact();
+    }
+
+    public static Jws<Claims> jwtVerification(String jwt,byte[] secret) {
+        return Jwts.parser()
+                .setSigningKey(Keys.hmacShaKeyFor(secret))
+                .parseClaimsJws(jwt);
     }
 }

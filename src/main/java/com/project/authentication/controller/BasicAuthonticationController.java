@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,5 +23,11 @@ public class BasicAuthonticationController {
     @PostMapping({"/login"})
     public ResponseEntity<?> userLogin(@RequestBody AuthenticationRequest authenticationRequest){
         return service.authenticateUser(authenticationRequest);
+    }
+
+    @PostMapping({"/bankAccountDetails"})
+    public ResponseEntity<?> retreiveBankAccountDetails(@RequestBody BankAccountRequest bankAccountRequest ,
+                                                        @RequestHeader("Authorization") String token){
+        return service.retrieveBankAccountDetails(bankAccountRequest,token);
     }
 }

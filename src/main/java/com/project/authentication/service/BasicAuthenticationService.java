@@ -4,8 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.project.authentication.constants.Constants;
 import com.project.authentication.model.*;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 import java.util.*;
 import com.project.authentication.utils.BasicAuthenticationUtil;
+import com.project.authentication.utils.ConsumerProducerUtil;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,4 +121,34 @@ public class BasicAuthenticationService {
         return ResponseEntity.ok().body(response);
     }
 
+    public ResponseEntity<?> retrieveBankAccountDetails(BankAccountRequest bankAccountRequest , String token) {
+        String jwt = token.split(" ")[1].trim();
+        String userName = "";
+        try {
+            Jws<Claims> result = BasicAuthenticationUtil.jwtVerification(jwt,secret);
+            LOGGER.debug(" jwt result value is: " + result);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest()
+                    .body("failed to find a matching data for your token key.");
+        }
+
+        String bankAccountJson = gson.toJson(bankAccountRequest);
+        String consumedMessage="";
+        ConsumerProducerUtil util= new ConsumerProducerUtil();
+        try {
+            util.produceMessage(bankAccountJson);
+            consumedMessage = util.consumeMessage();
+        }catch(IOException | TimeoutException exception){
+            return ResponseEntity.badRequest()
+                    .body("failed to retrieve data from the server. " +
+                            "error message: " + exception.getMessage() +
+                            " error stackTrace" + exception.getStackTrace());
+
+        }
+        response = new BankAccountDetailsResponse(consumedMessage);
+        response.setStatusCode("200");
+        response.setStatusDescription("Message was consumed successfully!");
+        return ResponseEntity.ok()
+                .body(consumedMessage);
+    }
 }
