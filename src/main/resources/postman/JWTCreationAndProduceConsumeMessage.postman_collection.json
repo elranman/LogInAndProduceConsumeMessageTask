@@ -1,0 +1,129 @@
+{
+	"info": {
+		"_postman_id": "0ca448ec-056f-4676-8332-c3ac64b5d5d6",
+		"name": "JWTCreationAndProduceConsumeMessage",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RegisterUserPreLogIn",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "--this API should be run 1st pre the /login API.--\n\nif the user will register 1st , the /login API will \nreturn a success response with JWT token back."
+			},
+			"response": [
+				{
+					"name": "RegisterUserPreLogIn",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\" : \"foo\",\n    \"emailAddress\" : \"foo@fish.com\",\n    \"password\" : \"passworddd\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/registration",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"registration"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 14 Jun 2021 21:30:30 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"statusCode\": \"200 OK\",\n    \"statusDescription\": \"Registration step passed successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "LoginUser",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
+				},
+				"description": "in case of success will return a JWT token back.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "getBankAccountDetails",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJBdXRoZW50aWNhdGUgVXNlciIsInBhc3N3b3JkIjoiZWVlZTBlYmM0MzM3NzUzM2NjMzE5YmM0YWIzNzE0NTciLCJ1c2VyTmFtZSI6ImZvb0BmaXNoLmNvbSIsImlhdCI6MTYyMzcwNjM1NiwiZXhwIjoxNjIzNzA2NDc2fQ.mS3epxKtcXe1ElUIeD0HZiIpOpXx23jiedyDZyME4h4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"accountId\":12345,\n    \"customerName\":\"Jhon Dou\",\n    \"branchId\":\"14\",\n    \"customerType\":\"B\",\n    \"customerCredit\":\"72\"\n}\n"
+				},
+				"url": {
+					"raw": "http://localhost:8080/bankAccountDetails",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"bankAccountDetails"
+					]
+				},
+				"description": "will send as parameter the JWT token and will receive back from Queue the Bank Account details as JSON."
+			},
+			"response": []
+		}
+	]
+}
