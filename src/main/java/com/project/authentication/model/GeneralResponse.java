@@ -1,7 +1,6 @@
-package com.project.authentication.service;
+package com.project.authentication.model;
 
 import org.springframework.stereotype.Component;
-
 import java.io.Serializable;
 
 @Component

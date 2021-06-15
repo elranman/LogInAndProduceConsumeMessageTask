@@ -1,4 +1,4 @@
-package com.project.authentication.service;
+package com.project.authentication.model;
 
 public class User {
     private String fullName;
